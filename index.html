@@ -17,6 +17,7 @@
   /><button class="convert-button">
   <span class="iconify" data-icon="fa-solid:download"></span>
 </button>
+  <button id="playBtn">play</button>
 </div>
 <div class="inputs">
   <label for="format">Format:</label>
@@ -67,6 +68,10 @@
     </td>
   </tr>
 </table>
+<div style="margin: 2rem;"></div>
+<video id="myVideo" src="" controls width="640">
+  <source src="" type="video/mp4">
+</video>
 </body>
 </html>
 <script>
@@ -107,6 +112,28 @@
       .toLowerCase()
       .replace(/ /g, "")
       .replace(/quality/, "")}`;
+  }
+
+  var playBtn = document.getElementById("playBtn");
+  playBtn.addEventListener("click", () => {
+    play(URLinput.value);
+  })
+
+  function play(URL) {
+    let sel = document.getElementById("format");
+    let qualsel = document.getElementById("quality");
+    fetch(`/play?URL=${URL}&format=${
+      sel.options[sel.selectedIndex].text
+    }&quality=${qualsel.options[qualsel.selectedIndex].text
+      .toLowerCase()
+      .replace(/ /g, "")
+      .replace(/quality/, "")}`, { method: 'GET'})
+    .then(response => {
+      console.log(response)
+      console.log(response.json());
+      $('#myVideo')[0].load(response.json());
+    })
+    .catch(err => console.log(err));
   }
 </script>
 <style>

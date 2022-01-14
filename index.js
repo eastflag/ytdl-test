@@ -53,6 +53,34 @@ app.get("/download", (req, res) => {
   }
 });
 
+// Play video
+app.get("/play", (req, res) => {
+  var URL = req.query.URL;
+  // res.header(
+  //   "Content-Disposition",
+  //   `attachment; filename="Video.${req.query.format || "mp4"}"`
+  // );
+  try {
+    if (req.query.quality === "highest") {
+      console.log("Downloading highest format");
+      ytdl(URL, {
+        format: req.query.format.toLowerCase() || "mp4"
+      }).pipe(res);
+    } else {
+      console.log("Downloading custom format");
+      ytdl(URL, {
+        format: req.query.format.toLowerCase() || "mp4",
+        quality: req.query.quality || "highest"
+      }).pipe(res);
+    }
+  } catch (err) {
+    console.log("There was an error, attempting to download still.");
+    ytdl(URL, {
+      format: "mp4"
+    }).pipe(res);
+  }
+});
+
 app.get("/basic", async (req, res) => {
   var URL = req.query.URL;
   try {
