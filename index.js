@@ -56,10 +56,10 @@ app.get("/download", (req, res) => {
 // Play video
 app.get("/play", (req, res) => {
   var URL = req.query.URL;
-  // res.header(
-  //   "Content-Disposition",
-  //   `attachment; filename="Video.${req.query.format || "mp4"}"`
-  // );
+  res.header(
+    "Content-Type",
+    `video/mp4`
+  );
   try {
     if (req.query.quality === "highest") {
       console.log("Downloading highest format");
